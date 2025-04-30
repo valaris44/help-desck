@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrador</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <img src="https://conselheirolafaiete.mg.gov.br/v2/wp-content/uploads/2025/01/Logo-Redonda.png"
+            alt="Logo da Prefeitura">
+        <h1 style="color: #fff;">Login Administrador</h1>
+    </header>
+    <button class="back-btn" onclick="window.history.back()" aria-label="Voltar"
+        style="position:absolute;top:32px;left:32px;background:none;border:none;cursor:pointer;z-index:201;">
+        <svg width="36" height="36" fill="none" viewBox="0 0 24 24">
+            <path d="M15 18l-6-6 6-6" stroke="#185a9d" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </button>
+    <main class="container">
+        <div id="login-error"
+            style="display:none; color: #b71c1c; background: #ffebee; border: 1px solid #e57373; border-radius: 6px; padding: 18px; margin-bottom: 18px; text-align: center;">
+            <strong>Usuário ou senha errados, tente novamente ou redefina a senha.</strong><br>
+            <button type="button" onclick="window.location.href='reset_password.html'"
+                style="margin-top:10px;">Redefinir Senha</button>
+        </div>
+        <form action="backend/login.php" method="POST" id="admin-login-form">
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" placeholder="Digite seu usuário..." required>
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" placeholder="Digite sua senha..." required>
+            <label style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="lembrar-admin" name="lembrar">
+                Lembrar login e senha neste dispositivo
+            </label>
+            <button type="submit">Entrar</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2025 Prefeitura de Conselheiro Lafaiete TI - Suporte Técnico</p>
+    </footer>
+    <script>
+        if (window.location.search.includes('error=invalid_credentials')) {
+            document.getElementById('login-error').style.display = 'block';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const saved = JSON.parse(localStorage.getItem('login_admin') || '{}');
+            if (saved.username) document.getElementById('username').value = saved.username;
+            if (saved.password) document.getElementById('password').value = saved.password;
+            if (saved.username && saved.password) document.getElementById('lembrar-admin').checked = true;
+        });
+        document.getElementById('admin-login-form').addEventListener('submit', function () {
+            if (document.getElementById('lembrar-admin').checked) {
+                localStorage.setItem('login_admin', JSON.stringify({
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value
+                }));
+            } else {
+                localStorage.removeItem('login_admin');
+            }
+        });
+    </script>
+</body>
+
+</html>

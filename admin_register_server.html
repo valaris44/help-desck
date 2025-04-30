@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Conta de Servidor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin_menu.html">Chamados</a></li>
+                <li><a href="admin_users.html">Controle de Usuários</a></li>
+                <li><a href="admin_register_server.html" class="active">Criar Conta de Servidor</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <div class="breadcrumb">Você está em: Criar Conta de Servidor</div>
+        <h1>Criar Conta de Servidor Público</h1>
+        <form action="backend/register.php" method="POST" id="register-server-form" autocomplete="off">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="matricula">Número de Matrícula:</label>
+            <input type="text" id="matricula" name="matricula" required>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="area_atuacao">Área de Atuação:</label>
+            <select id="area_atuacao" name="area_atuacao" required>
+                <option value="">Selecione a área...</option>
+                <option>Gabinete do Prefeito</option>
+                <option>Secretaria de Administração</option>
+                <option>Secretaria de Finanças / Tesouraria</option>
+                <option>Controladoria / Auditoria Interna</option>
+                <option>Procuradoria Jurídica</option>
+                <option>Secretaria Municipal de Saúde</option>
+                <option>Secretaria de Educação</option>
+                <option>Obras e Infraestrutura</option>
+                <option>Serviços Urbanos / Limpeza Pública</option>
+                <option>Transportes e Trânsito</option>
+                <option>Assistência Social</option>
+                <option>Meio Ambiente</option>
+                <option>Agricultura e Pecuária</option>
+                <option>Cultura, Esporte e Lazer</option>
+                <option>Planejamento Urbano e Habitação</option>
+                <option>Desenvolvimento Econômico</option>
+                <option>Tecnologia da Informação (TI)</option>
+            </select>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <label for="confirmar_senha">Confirmar Senha:</label>
+            <input type="password" id="confirmar_senha" name="confirmar_senha" required>
+            <input type="hidden" name="tipo" value="servidor">
+            <button type="submit">Criar Conta</button>
+        </form>
+        <div id="register-feedback" style="display:none; margin-top:20px; text-align:center;"></div>
+    </div>
+    <script>
+        document.getElementById('register-server-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const form = this;
+            const data = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: data,
+                credentials: 'include'
+            })
+                .then(r => r.text())
+                .then(resp => {
+                    // Se o backend redirecionar, mostrar sucesso, senão mostrar erro
+                    if (resp.includes('Erro no registro')) {
+                        document.getElementById('register-feedback').style.display = 'block';
+                        document.getElementById('register-feedback').innerHTML = resp;
+                    } else {
+                        form.style.display = 'none';
+                        document.getElementById('register-feedback').style.display = 'block';
+                        document.getElementById('register-feedback').innerHTML = '<span class="success">Conta criada com sucesso!</span>';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('register-feedback').style.display = 'block';
+                    document.getElementById('register-feedback').innerHTML = '<span class="alert">Erro de conexão com o sistema central.</span>';
+                });
+        });
+    </script>
+</body>
+
+</html>

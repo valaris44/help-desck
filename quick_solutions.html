@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soluções Rápidas</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #quick-solutions li {
+            margin-bottom: 18px;
+            padding: 18px;
+            background-color: rgba(241, 248, 233, 0.97);
+            border: 1px solid #c5e1a5;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        #quick-solutions li:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 6px 14px rgba(24, 90, 157, 0.10);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="server_menu.html">Menu</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <button class="back-btn" onclick="window.history.back()" aria-label="Voltar"
+            style="position:absolute;top:32px;left:32px;background:none;border:none;cursor:pointer;z-index:201;">
+            <svg width="36" height="36" fill="none" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" stroke="#185a9d" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
+        <div class="breadcrumb">Você está em: Soluções Rápidas</div>
+        <h1>Soluções Rápidas</h1>
+        <h3>Encontre soluções para problemas comuns</h3>
+        <p>Se você está enfrentando algum problema técnico, confira as soluções rápidas abaixo antes de abrir um
+            chamado.</p>
+        <ul id="quick-solutions">
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Não consigo acessar o e-mail corporativo. <br>
+                <span class="short-description"><strong>Solução:</strong> Verifique sua conexão com a internet e tente
+                    redefinir sua senha.</span>
+                <span class="detailed-description" style="display: none;">
+                    Certifique-se de que sua internet está funcionando. Tente abrir outro site para confirmar. Se a
+                    internet estiver ok, tente redefinir sua senha do e-mail. Caso não consiga, entre em contato com o
+                    suporte técnico para ajuda.
+                </span>
+            </li>
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Computador travando frequentemente. <br>
+                <span class="short-description"><strong>Solução:</strong> Reinicie o computador e veja se
+                    melhora.</span>
+                <span class="detailed-description" style="display: none;">
+                    Feche os programas que você não está usando. Reinicie o computador para liberar memória. Se
+                    continuar travando, peça ajuda ao suporte técnico para verificar se precisa de manutenção.
+                </span>
+            </li>
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Impressora não imprime. <br>
+                <span class="short-description"><strong>Solução:</strong> Veja se a impressora está ligada e
+                    conectada.</span>
+                <span class="detailed-description" style="display: none;">
+                    Confira se há papel e tinta na impressora. Veja se o cabo está conectado ou se a impressora está no
+                    Wi-Fi. Se não funcionar, desligue e ligue a impressora e tente novamente.
+                </span>
+            </li>
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Sistema operacional lento. <br>
+                <span class="short-description"><strong>Solução:</strong> Feche programas que você não está
+                    usando.</span>
+                <span class="detailed-description" style="display: none;">
+                    Limpe arquivos desnecessários do computador. Feche programas que não estão sendo usados. Se
+                    continuar lento, peça ajuda ao suporte técnico para verificar se precisa de uma atualização.
+                </span>
+            </li>
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Não consigo acessar a rede interna. <br>
+                <span class="short-description"><strong>Solução:</strong> Veja se o cabo de rede está conectado ou se o
+                    Wi-Fi está ligado.</span>
+                <span class="detailed-description" style="display: none;">
+                    Confira se o cabo de rede está bem encaixado ou se o Wi-Fi está ativado. Reinicie o computador e
+                    tente novamente. Se não funcionar, peça ajuda ao suporte técnico.
+                </span>
+            </li>
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Tela azul no Windows. <br>
+                <span class="short-description"><strong>Solução:</strong> Reinicie o computador.</span>
+                <span class="detailed-description" style="display: none;">
+                    Se aparecer uma tela azul, anote o que está escrito e reinicie o computador. Se continuar
+                    acontecendo, peça ajuda ao suporte técnico para verificar o problema.
+                </span>
+            </li>
+            <li onmouseover="showDetails(this)" onmouseout="hideDetails(this)">
+                <strong>Problema:</strong> Aplicativo não abre. <br>
+                <span class="short-description"><strong>Solução:</strong> Tente reinstalar o aplicativo.</span>
+                <span class="detailed-description" style="display: none;">
+                    Feche o aplicativo e tente abrir novamente. Se não funcionar, desinstale e instale o aplicativo de
+                    novo. Se continuar com problemas, peça ajuda ao suporte técnico.
+                </span>
+            </li>
+        </ul>
+    </div>
+    <script>
+        function showDetails(element) {
+            element.querySelector('.short-description').style.display = 'none';
+            element.querySelector('.detailed-description').style.display = 'block';
+        }
+        function hideDetails(element) {
+            element.querySelector('.short-description').style.display = 'block';
+            element.querySelector('.detailed-description').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

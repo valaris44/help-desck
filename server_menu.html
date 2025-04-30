@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu do Servidor</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .server-menu-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 36px;
+            justify-content: center;
+            margin-top: 48px;
+        }
+
+        .server-menu-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(24, 90, 157, 0.10);
+            padding: 36px 38px 28px 38px;
+            min-width: 220px;
+            min-height: 180px;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.2s, transform 0.2s;
+            cursor: pointer;
+            border: 2.5px solid transparent;
+        }
+
+        .server-menu-card:hover,
+        .server-menu-card:focus {
+            box-shadow: 0 8px 32px rgba(24, 90, 157, 0.18);
+            border-color: #43cea2;
+            transform: translateY(-4px) scale(1.03);
+            outline: none;
+        }
+
+        .server-menu-card svg,
+        .server-menu-card img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 18px;
+        }
+
+        .server-menu-card span {
+            font-size: 1.18rem;
+            color: #185a9d;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .server-menu-card small {
+            color: #444;
+            font-size: 0.98rem;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .breadcrumb {
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 900px) {
+            .server-menu-actions {
+                flex-direction: column;
+                gap: 24px;
+                align-items: center;
+            }
+
+            .server-menu-card {
+                min-width: 90vw;
+                max-width: 98vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="server_menu.html" class="active">Menu</a></li>
+                <li><a href="quick_solutions.html">Soluções Rápidas</a></li>
+                <li><a href="report_problem.html">Reportar um Problema</a></li>
+                <li><a href="contatos.html">Contatos para Suporte</a></li>
+                <li><a href="info_app.html">Informações do App</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <div class="breadcrumb">Você está em: Menu do Servidor</div>
+        <h1 style="margin-bottom: 8px;">Menu do Servidor</h1>
+        <h2 style="color:#43cea2; font-size:1.3rem; margin-top:8px;">Bem-vindo! Escolha uma opção:</h2>
+        <div class="server-menu-actions">
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='quick_solutions.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="22" fill="#43cea2" stroke="#185a9d" stroke-width="2" />
+                    <path d="M24 14v10l8 5" stroke="#185a9d" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span>Soluções Rápidas</span>
+                <small>Veja dicas para problemas comuns antes de abrir um chamado.</small>
+            </div>
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='report_problem.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="22" fill="#185a9d" stroke="#43cea2" stroke-width="2" />
+                    <rect x="22" y="14" width="4" height="14" rx="2" fill="#fff" />
+                    <rect x="22" y="32" width="4" height="4" rx="2" fill="#fff" />
+                </svg>
+                <span>Reportar um Problema</span>
+                <small>Abra um chamado para a equipe de suporte técnico.</small>
+            </div>
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='ver_chamados.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <rect x="8" y="12" width="32" height="24" rx="6" fill="#43cea2" stroke="#185a9d" stroke-width="2" />
+                    <path d="M16 20h16M16 28h10" stroke="#185a9d" stroke-width="2.5" stroke-linecap="round" />
+                </svg>
+                <span>Meus Chamados</span>
+                <small>Acompanhe o andamento e histórico dos seus chamados.</small>
+            </div>
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='alterar_senha.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="22" fill="#185a9d" stroke="#43cea2" stroke-width="2" />
+                    <path d="M24 32v-8M24 24a4 4 0 1 0-4-4" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+                </svg>
+                <span>Alterar Senha</span>
+                <small>Atualize sua senha de acesso ao sistema.</small>
+            </div>
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='contatos.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="22" fill="#43cea2" stroke="#185a9d" stroke-width="2" />
+                    <path d="M16 20h16M16 28h16" stroke="#185a9d" stroke-width="2.5" stroke-linecap="round" />
+                    <circle cx="24" cy="24" r="4" fill="#fff" />
+                </svg>
+                <span>Contatos para Suporte</span>
+                <small>Veja como falar com a equipe de TI.</small>
+            </div>
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='info_app.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="22" fill="#185a9d" stroke="#43cea2" stroke-width="2" />
+                    <path d="M24 16v8M24 32h.01" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+                </svg>
+                <span>Informações do App</span>
+                <small>Saiba mais sobre o funcionamento do sistema.</small>
+            </div>
+            <div class="server-menu-card" tabindex="0" onclick="window.location.href='login.html'">
+                <svg fill="none" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="22" fill="#fff" stroke="#185a9d" stroke-width="2" />
+                    <path d="M30 18l-6 6 6 6M18 24h12" stroke="#185a9d" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span style="color:#b71c1c;">Sair</span>
+                <small>Sair do sistema</small>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Prefeitura de Conselheiro Lafaiete TI - Suporte Técnico</p>
+    </footer>
+</body>
+
+</html>

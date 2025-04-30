@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Sistema Integrado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="content" style="margin: 0 auto; max-width: 400px;">
+        <div class="breadcrumb">Você está em: Login</div>
+        <h1>Login</h1>
+        <form action="backend/login.php" method="POST" id="login-form">
+            <label for="matricula">Número de Matrícula:</label>
+            <input type="text" id="matricula" name="matricula" required>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <label style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="lembrar" name="lembrar">
+                Lembrar login e senha neste dispositivo
+            </label>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Preenche campos se salvos
+        const saved = JSON.parse(localStorage.getItem('login_servidor') || '{}');
+        if (saved.matricula) document.getElementById('matricula').value = saved.matricula;
+        if (saved.senha) document.getElementById('senha').value = saved.senha;
+        if (saved.matricula && saved.senha) document.getElementById('lembrar').checked = true;
+    });
+    document.getElementById('login-form').addEventListener('submit', function () {
+        if (document.getElementById('lembrar').checked) {
+            localStorage.setItem('login_servidor', JSON.stringify({
+                matricula: document.getElementById('matricula').value,
+                senha: document.getElementById('senha').value
+            }));
+        } else {
+            localStorage.removeItem('login_servidor');
+        }
+    });
+</script>
+
+</html>

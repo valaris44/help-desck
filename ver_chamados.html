@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Chamados - Sistema Integrado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="server_menu.html">Menu</a></li>
+                <li><a href="criar_chamado.html">Criar Chamado</a></li>
+                <li><a href="ver_chamados.html" class="active">Ver Chamados</a></li>
+                <li><a href="alterar_senha.html">Alterar Senha</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <div class="breadcrumb">Você está em: Ver Chamados</div>
+        <h1>Meus Chamados</h1>
+        <div id="loading-chamados" style="text-align:center; margin:20px;">Carregando chamados...</div>
+        <h2>Chamados em Andamento</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Assunto</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                    <th>Histórico</th>
+                </tr>
+            </thead>
+            <tbody id="chamados-tbody">
+                <!-- Linhas de chamados em andamento -->
+            </tbody>
+        </table>
+        <h2>Histórico de Chamados Finalizados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Assunto</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                    <th>Histórico</th>
+                </tr>
+            </thead>
+            <tbody id="chamados-historico-tbody">
+                <!-- Linhas de chamados finalizados -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        fetch('backend/listar_chamados.php', { credentials: 'include' })
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('loading-chamados').style.display = 'none';
+                const tbody = document.getElementById('chamados-tbody');
+                const tbodyHist = document.getElementById('chamados-historico-tbody');
+                tbody.innerHTML = '';
+                tbodyHist.innerHTML = '';
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Nenhum chamado encontrado.</td></tr>';
+                } else {
+                    data.forEach(chamado => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                    <td>${chamado.id_problema}</td>
+                    <td>${chamado.nome_problema}</td>
+                    <td>${chamado.status}</td>
+                    <td>${chamado.data_envio}</td>
+                    <td><button onclick="verHistorico(${chamado.id_problema})">Ver Histórico</button></td>
+                `;
+                        if (chamado.status === 'Finalizado' || chamado.status === 'Cancelado') {
+                            tbodyHist.appendChild(tr);
+                        } else {
+                            tbody.appendChild(tr);
+                        }
+                    });
+                }
+            })
+            .catch(() => {
+                document.getElementById('loading-chamados').innerHTML = '<span class="alert">Erro ao carregar chamados.</span>';
+            });
+
+        function verHistorico(id) {
+            fetch(`backend/historico_chamado.php?id_problema=${id}`, { credentials: 'include' })
+                .then(r => r.json())
+                .then(hist => {
+                    let msg = '';
+                    if (hist.length === 0) {
+                        msg = 'Nenhum histórico encontrado.';
+                    } else {
+                        msg = '<ul style="text-align:left;">' + hist.map(h => `<li><b>${h.data_acao}</b>: ${h.acao} - ${h.detalhes}</li>`).join('') + '</ul>';
+                    }
+                    alert(msg);
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Chamados por Área</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin_menu.html">Chamados</a></li>
+                <li><a href="admin_dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="admin_users.html">Controle de Usuários</a></li>
+                <li><a href="admin_register_server.html">Criar Conta de Servidor</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <h1>Dashboard de Chamados por Área</h1>
+        <canvas id="chamadosPorAreaChart" width="600" height="320"></canvas>
+        <div id="dashboard-table"></div>
+    </div>
+    <script>
+        fetch('backend/dashboard_chamados_area.php')
+            .then(r => r.json())
+            .then(data => {
+                const ctx = document.getElementById('chamadosPorAreaChart').getContext('2d');
+                const labels = data.map(item => item.area_atuacao);
+                const values = data.map(item => item.total_chamados);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Quantidade de Chamados',
+                            data: values,
+                            backgroundColor: '#43cea2',
+                            borderColor: '#185a9d',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, stepSize: 1 }
+                        }
+                    }
+                });
+
+                // Tabela abaixo do gráfico
+                let html = '<h2>Chamados por Área</h2><table><thead><tr><th>Área</th><th>Quantidade de Chamados</th></tr></thead><tbody>';
+                data.forEach(item => {
+                    html += `<tr><td>${item.area_atuacao}</td><td>${item.total_chamados}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('dashboard-table').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reportar Problema</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .confirmation-box {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border: 2px solid #43cea2;
+            border-radius: 12px;
+            padding: 40px 32px;
+            margin: 60px auto 0 auto;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(24, 90, 157, 0.10);
+            font-size: 1.18em;
+        }
+
+        .confirmation-box h3 {
+            color: #185a9d;
+            margin-bottom: 18px;
+        }
+
+        .confirmation-box button {
+            margin-top: 28px;
+            padding: 13px 32px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #185a9d, #43cea2);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .confirmation-box button:hover {
+            background: linear-gradient(90deg, #43cea2, #185a9d);
+            transform: scale(1.04);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="server_menu.html">Menu</a></li>
+                <li><a href="quick_solutions.html">Soluções Rápidas</a></li>
+                <li><a href="report_problem.html" class="active">Reportar um Problema</a></li>
+                <li><a href="contatos.html">Contatos para Suporte</a></li>
+                <li><a href="info_app.html">Informações do App</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <button class="back-btn" onclick="window.history.back()" aria-label="Voltar">
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" stroke="#185a9d" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
+        <div class="breadcrumb">Você está em: Reportar um Problema</div>
+        <h1>Reportar Problema</h1>
+        <form id="problem-form" action="backend/criar_chamado.php" method="POST" enctype="multipart/form-data"
+            style="max-width:480px;width:100%;">
+            <label for="person-name">Seu Nome:</label>
+            <input type="text" id="person-name" name="person-name" placeholder="Digite seu nome..." required readonly>
+
+            <label for="person-area">Área de Trabalho:</label>
+            <input type="text" id="person-area" name="person-area" placeholder="Digite sua área de trabalho..." required
+                readonly>
+
+            <label for="server-registration">Matrícula do Servidor:</label>
+            <input type="text" id="server-registration" name="matricula" placeholder="Digite sua matrícula..." required
+                readonly>
+
+            <label for="problem-name">Nome ou código do Problema:</label>
+            <input type="text" id="problem-name" name="assunto" placeholder="Descreva o problema..." required>
+
+            <label for="problem-level">Nível de Urgência:</label>
+            <select id="problem-level" name="problem-level">
+                <option value="baixa">Baixo</option>
+                <option value="média">Médio</option>
+                <option value="alta">Alto</option>
+            </select>
+
+            <label for="problem-description">Descrição:</label>
+            <textarea id="problem-description" name="descricao" placeholder="Detalhe o problema..." required></textarea>
+
+            <label for="problem-media">Anexar Imagem ou Vídeo (opcional):</label>
+            <input type="file" id="problem-media" name="problem-media" accept="image/*,video/*">
+
+            <button type="submit" style="margin-top: 20px;">Enviar</button>
+        </form>
+        <section id="confirmation-message" class="confirmation-box" style="display: none;">
+            <h3>Obrigado por enviar seu problema!</h3>
+            <p>Seu problema será analisado e entraremos em contato em breve.</p>
+            <p>Se precisar de mais informações, entre em contato pelo número: <strong>(31) 3764-9801</strong> Ramal:
+                <strong>1021</strong>.</p>
+            <button onclick="window.location.href='server_menu.html'">Voltar ao Menu</button>
+        </section>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Preenche os campos do servidor logado
+        fetch('backend/dados_usuario_logado.php', { credentials: 'include' })
+            .then(r => r.json())
+            .then(user => {
+                if (user && user.nome && user.matricula && user.area_atuacao) {
+                    document.getElementById('person-name').value = user.nome;
+                    document.getElementById('server-registration').value = user.matricula;
+                    document.getElementById('person-area').value = user.area_atuacao;
+                }
+            });
+    });
+    document.getElementById('problem-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const form = document.getElementById('problem-form');
+        const data = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: data,
+            credentials: 'include'
+        })
+            .then(r => r.json())
+            .then(resp => {
+                form.style.display = 'none';
+                document.getElementById('confirmation-message').style.display = 'block';
+                if (resp.success) {
+                    document.getElementById('confirmation-message').innerHTML = '<span class="success">Chamado enviado com sucesso!</span>';
+                } else {
+                    document.getElementById('confirmation-message').innerHTML = '<span class="alert">' + (resp.message || 'Erro ao enviar chamado') + '</span>';
+                }
+            })
+            .catch(() => {
+                document.getElementById('confirmation-message').style.display = 'block';
+                document.getElementById('confirmation-message').innerHTML = '<span class="alert">Erro de conexão com o sistema central.</span>';
+            });
+    });
+</script>
+
+</html>

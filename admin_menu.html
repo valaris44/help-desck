@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Administrador</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin_menu.html" class="active">Chamados</a></li>
+                <li><a href="admin_dashboard.html">Dashboard</a></li>
+                <li><a href="admin_users.html">Controle de Usuários</a></li>
+                <li><a href="admin_register_server.html">Criar Conta de Servidor</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <h1>Chamados Recebidos</h1>
+        <table id="chamados-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Servidor</th>
+                    <th>Área</th>
+                    <th>Problema</th>
+                    <th>Nível</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão preenchidas via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function carregarChamados() {
+            fetch('backend/listar_chamados.php')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector('#chamados-table tbody');
+                    tbody.innerHTML = '';
+                    data.forEach(chamado => {
+                        if (chamado.status === 'Finalizado' || chamado.status === 'Cancelado') return;
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                    <td>${chamado.id_problema}</td>
+                    <td>${chamado.nome_servidor}</td>
+                    <td>${chamado.area_atuacao}</td>
+                    <td>${chamado.nome_problema}</td>
+                    <td>${chamado.nivel_urgencia}</td>
+                    <td>${chamado.descricao}</td>
+                    <td>
+                        <form onsubmit="return atualizarStatus(event, ${chamado.id_problema})">
+                            <select name="status">
+                                <option value="Aberto" ${chamado.status === 'Aberto' ? 'selected' : ''}>Aberto</option>
+                                <option value="Em andamento" ${chamado.status === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
+                                <option value="Finalizado">Finalizar</option>
+                                <option value="Cancelado" ${chamado.status === 'Cancelado' ? 'selected' : ''}>Cancelar</option>
+                            </select>
+                            <button type="submit">Atualizar</button>
+                        </form>
+                    </td>
+                `;
+                        tbody.appendChild(tr);
+                    });
+                });
+        }
+
+        carregarChamados();
+        setInterval(carregarChamados, 5000);
+
+        function atualizarStatus(event, id_problema) {
+            event.preventDefault();
+            const form = event.target;
+            const status = form.status.value;
+            fetch('backend/update_chamado_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id_problema=${id_problema}&status=${encodeURIComponent(status)}`
+            })
+                .then(response => response.text())
+                .then(msg => {
+                    alert(msg);
+                    location.reload();
+                });
+            return false;
+        }
+
+        function verHistorico(id) {
+            fetch(`backend/historico_chamado.php?id_problema=${id}`, { credentials: 'include' })
+                .then(r => r.json())
+                .then(hist => {
+                    let msg = '';
+                    if (hist.length === 0) {
+                        msg = 'Nenhum histórico encontrado.';
+                    } else {
+                        msg = '<ul style="text-align:left;">' + hist.map(h => `<li><b>${h.data_acao}</b>: ${h.acao} - ${h.detalhes}</li>`).join('') + '</ul>';
+                    }
+                    alert(msg);
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Controle de Usuários</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(24, 90, 157, 0.08);
+            overflow: hidden;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 14px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 1.04rem;
+        }
+
+        .user-table th {
+            background: linear-gradient(90deg, #185a9d, #43cea2);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .user-table tr:nth-child(even) {
+            background: #f4f8fb;
+        }
+
+        .user-table tr:hover {
+            background: #e3f2fd;
+            transition: background 0.2s;
+        }
+
+        .btn-ver-chamados {
+            background: linear-gradient(90deg, #43cea2, #185a9d);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-ver-chamados:hover {
+            background: linear-gradient(90deg, #185a9d, #43cea2);
+            transform: scale(1.04);
+        }
+
+        .user-historico {
+            margin-top: 32px;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 18px 24px;
+            box-shadow: 0 2px 8px rgba(24, 90, 157, 0.07);
+        }
+
+        .user-historico h3 {
+            margin-top: 0;
+            color: #185a9d;
+        }
+
+        .user-historico ul {
+            padding-left: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin_menu.html">Chamados</a></li>
+                <li><a href="admin_users.html" class="active">Controle de Usuários</a></li>
+                <li><a href="admin_register_server.html">Criar Conta de Servidor</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <h1>Controle de Usuários</h1>
+        <div id="servidores-lista"></div>
+        <div id="historico-servidor" class="user-historico" style="display:none;"></div>
+    </div>
+    <script>
+        function listarServidores() {
+            fetch('backend/listar_servidores.php')
+                .then(r => r.json())
+                .then(data => {
+                    let html = `
+                <h2>Servidores Cadastrados</h2>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Matrícula</th>
+                            <th>Área de Atuação</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+                    data.forEach(s => {
+                        html += `
+                    <tr>
+                        <td>${s.nome}</td>
+                        <td>${s.matricula}</td>
+                        <td>${s.area_atuacao ? s.area_atuacao : '<span style="color:#b71c1c;">Não informado</span>'}</td>
+                        <td>
+                            <button class="btn-ver-chamados" onclick="verChamadosServidor(${s.id_usuario},'${encodeURIComponent(s.nome)}')">Ver Chamados</button>
+                        </td>
+                    </tr>
+                `;
+                    });
+                    html += '</tbody></table>';
+                    document.getElementById('servidores-lista').innerHTML = html;
+                });
+        }
+        function verChamadosServidor(id_usuario, nome) {
+            fetch('backend/listar_chamados_servidor.php?id_usuario=' + id_usuario)
+                .then(r => r.json())
+                .then(data => {
+                    let msg = `<h3>Chamados do Servidor: ${decodeURIComponent(nome)}</h3><ul>`;
+                    if (data.length === 0) {
+                        msg += '<li>Nenhum chamado encontrado.</li>';
+                    } else {
+                        data.forEach(c => {
+                            msg += `<li>ID: ${c.id_problema} - ${c.nome_problema} - Status: ${c.status} <button class="btn-ver-chamados" onclick="verHistorico(${c.id_problema})">Ver Histórico</button></li>`;
+                        });
+                    }
+                    msg += '</ul>';
+                    const histDiv = document.getElementById('historico-servidor');
+                    histDiv.innerHTML = msg;
+                    histDiv.style.display = 'block';
+                    histDiv.scrollIntoView({ behavior: 'smooth' });
+                });
+        }
+        function verHistorico(id) {
+            fetch(`backend/historico_chamado.php?id_problema=${id}`, { credentials: 'include' })
+                .then(r => r.json())
+                .then(hist => {
+                    let msg = '';
+                    if (hist.length === 0) {
+                        msg = 'Nenhum histórico encontrado.';
+                    } else {
+                        msg = '<ul style="text-align:left;">' + hist.map(h => `<li><b>${h.data_acao}</b>: ${h.acao} - ${h.detalhes}</li>`).join('') + '</ul>';
+                    }
+                    alert(msg);
+                });
+        }
+        listarServidores();
+    </script>
+</body>
+
+</html>

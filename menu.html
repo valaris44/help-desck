@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login do Servidor Público</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1 style="color: #fff;">Login do Servidor Público</h1>
+    </header>
+    <button class="back-btn" onclick="window.history.back()" aria-label="Voltar"
+        style="position:absolute;top:32px;left:32px;background:none;border:none;cursor:pointer;z-index:201;">
+        <svg width="36" height="36" fill="none" viewBox="0 0 24 24">
+            <path d="M15 18l-6-6 6-6" stroke="#185a9d" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </button>
+    <main class="container">
+        <div id="login-error"
+            style="display:none; color: #b71c1c; background: #ffebee; border: 1px solid #e57373; border-radius: 6px; padding: 18px; margin-bottom: 18px; text-align: center;">
+            <strong>Usuário ou senha errados, tente novamente ou redefina a senha.</strong><br>
+            <button type="button" onclick="window.location.href='reset_password.html'"
+                style="margin-top:10px;">Redefinir Senha</button>
+        </div>
+        <form action="backend/login.php" method="POST">
+            <label for="matricula">Número de Matrícula:</label>
+            <input type="text" id="matricula" name="matricula" required>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <p>Não tem uma conta? <a href="register.html">Registre-se aqui</a>.</p>
+    </main>
+    <footer>
+        <p>&copy; 2025 Prefeitura de Conselheiro Lafaiete TI - Suporte Técnico</p>
+    </footer>
+    <script>
+        if (window.location.search.includes('error=invalid_credentials')) {
+            document.getElementById('login-error').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

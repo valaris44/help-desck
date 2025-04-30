@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alterar Senha - Sistema Integrado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="imag/logo.png" alt="Logo da Prefeitura">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="server_menu.html">Menu</a></li>
+                <li><a href="criar_chamado.html">Criar Chamado</a></li>
+                <li><a href="ver_chamados.html">Ver Chamados</a></li>
+                <li><a href="alterar_senha.html" class="active">Alterar Senha</a></li>
+                <li><a href="login.html">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">
+        <div class="breadcrumb">Você está em: Alterar Senha</div>
+        <h1>Alterar Senha</h1>
+        <form action="backend/alterar_senha.php" method="POST">
+            <label for="senha_atual">Senha Atual:</label>
+            <input type="password" id="senha_atual" name="senha_atual" required>
+            <label for="nova_senha">Nova Senha:</label>
+            <input type="password" id="nova_senha" name="nova_senha" required>
+            <label for="confirmar_nova_senha">Confirmar Nova Senha:</label>
+            <input type="password" id="confirmar_nova_senha" name="confirmar_nova_senha" required>
+            <button type="submit">Alterar Senha</button>
+        </form>
+    </div>
+</body>
+
+</html>

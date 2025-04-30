@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Menu</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        .main-content {
+            margin-left: 230px;
+            padding: 40px 32px 32px 32px;
+            min-height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content .logo-inicio {
+            display: block;
+            margin: 0 auto 24px auto;
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(24, 90, 157, 0.10);
+        }
+
+        .simple-title {
+            color: #185a9d;
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin: 0 0 18px 0;
+            letter-spacing: 1px;
+            text-align: center;
+            background: none;
+            border: none;
+            box-shadow: none;
+            line-height: 1.3;
+            width: 100%;
+        }
+
+        h2 {
+            color: #185a9d;
+            font-size: 1.4rem;
+            margin: 18px 0 24px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .pre-menu-options {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .pre-menu-options button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 180px;
+            min-height: 120px;
+            font-size: 1.1em;
+            background: linear-gradient(90deg, #43cea2, #185a9d);
+            border-radius: 18px;
+            border: none;
+            box-shadow: 0 4px 16px rgba(67, 206, 162, 0.10);
+            transition: background 0.3s, transform 0.2s;
+            padding: 24px 32px;
+            gap: 12px;
+            outline: none;
+        }
+
+        .pre-menu-options button:focus {
+            outline: 3px solid #43cea2;
+            outline-offset: 2px;
+        }
+
+        .pre-menu-options button:hover {
+            background: linear-gradient(90deg, #185a9d, #43cea2);
+            transform: translateY(-3px) scale(1.04);
+        }
+
+        .pre-menu-options img {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 700px) {
+            .main-content {
+                margin-left: 0;
+                padding: 16px 2vw;
+            }
+
+            .main-content .logo-inicio {
+                width: 110px;
+                height: 110px;
+            }
+
+            .simple-title {
+                font-size: 1.3rem;
+            }
+
+            .pre-menu-options {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        .hamburger {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 200;
+        }
+
+        .sidebar {
+            z-index: 100;
+        }
+
+        @media (min-width: 1101px) {
+            .hamburger {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar closed" id="sidebar">
+        <div class="logo">
+            <img src="./imag/logo.png" alt="Logo da Prefeitura" loading="lazy">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active" aria-current="page">Início</a></li>
+                <li><a href="menu.html">Login Servidor</a></li>
+                <li><a href="admin_login.html">Login Administrador</a></li>
+                <li><a href="register.html">Registrar Servidor</a></li>
+                <li><a href="registrar-adm.php">Registrar Administrador</a></li>
+                <li><a href="quick_solutions.html">Soluções Rápidas</a></li>
+            </ul>
+        </nav>
+    </div>
+    <button class="hamburger" id="sidebarToggle" aria-label="Abrir menu" tabindex="0">
+        <span></span>
+    </button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="main-content">
+        <img class="logo-inicio" src="./imag/logo.png" alt="Logo da Prefeitura" loading="lazy">
+        <h1 class="simple-title">Sistema Integrado de Gestão e Chamados</h1>
+        <h2>Escolha sua opção</h2>
+        <div class="pre-menu-options">
+            <button onclick="window.location.href='admin_login.html'" type="button"
+                aria-label="Acessar área do administrador">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Ícone Administrador">
+                Administrador
+            </button>
+            <button onclick="window.location.href='menu.html'" type="button"
+                aria-label="Acessar área do servidor público">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" alt="Ícone Servidor">
+                Servidor Público
+            </button>
+        </div>
+    </div>
+    <footer>
+        <p id="backend-status">&copy; 2025 Prefeitura de Conselheiro Lafaiete TI - Suporte Técnico</p>
+    </footer>
+    <script>
+        // Sidebar open/close logic
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+        function openSidebar() {
+            sidebar.classList.remove('closed');
+            sidebar.classList.add('open');
+            overlay.style.display = 'block';
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebar.classList.add('closed');
+            overlay.style.display = 'none';
+        }
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+        overlay.addEventListener('click', function () {
+            closeSidebar();
+        });
+        function handleSidebarOnResize() {
+            if (window.innerWidth > 1100) {
+                sidebar.classList.remove('closed');
+                sidebar.classList.add('open');
+                overlay.style.display = 'none';
+            } else {
+                sidebar.classList.remove('open');
+                sidebar.classList.add('closed');
+                overlay.style.display = 'none';
+            }
+        }
+        window.addEventListener('resize', handleSidebarOnResize);
+        handleSidebarOnResize();
+        // Fechar sidebar com ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeSidebar();
+        });
+        // Verifica se o backend está online
+        fetch('https://sistema.prefeitura.gov.br/valaris/php/ping.php', { method: 'GET' })
+            .then(() => {
+                document.getElementById('backend-status').innerHTML = '&copy; 2025 Prefeitura de Conselheiro Lafaiete TI - Suporte Técnico';
+            })
+            .catch(() => {
+                document.getElementById('backend-status').innerHTML = '<span style="color:red;">Não foi possível conectar ao sistema central. Verifique sua internet ou tente mais tarde.</span>';
+            });
+    </script>
+</body>
+
+</html>
